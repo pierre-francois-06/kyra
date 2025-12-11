@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kyra – Wissenschaftspropädeutik Prüfungsvorbereitung (Vollversion)</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: linear-gradient(135deg, #ffd6f2, #ffe6ff);
+      color: #3b235a;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 10px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    header p {
+      margin: 4px 0 0;
+      font-size: 0.95rem;
+    }
+
+    .bear-flower {
+      font-size: 1.5rem;
+      margin: 4px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 0 10px 30px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    nav button {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #ff9ad5;
+      color: #3b235a;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+      font-size: 0.9rem;
+    }
+
+    nav button:hover {
+      transform: translateY(-1px);
+      background: #ffaee0;
+      box-shadow: 0 2px 7px rgba(0, 0, 0, 0.18);
+    }
+
+    nav button.active {
+      background: #ff7fc8;
+      color: #fff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 16px 18px 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "🌸";
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.09;
+      right: 10px;
+      top: 0px;
+    }
+
+    .card.bear::before {
+      content: "🐻";
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: #7a568c;
+      margin-bottom: 8px;
+    }
+
+    .summary ul {
+      margin: 6px 0 0 16px;
+      padding: 0;
+      font-size: 0.92rem;
+    }
+
+    .summary li {
+      margin-bottom: 3px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #ffe4f3;
+      color: #a53f86;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .question {
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      background: #fff6fb;
+      border: 1px solid #ffd0ef;
+      font-size: 0.92rem;
+    }
+
+    .question h3 {
+      margin: 0 0 6px;
+      font-size: 0.98rem;
+    }
+
+    .question p {
+      margin: 0 0 6px;
+    }
+
+    .question .meta {
+      font-size: 0.8rem;
+      color: #8a6b9a;
+      margin-bottom: 4px;
+    }
+
+    .options {
+      margin: 6px 0 8px 0;
+    }
+
+    .options label {
+      display: block;
+      margin: 2px 0;
+      cursor: pointer;
+    }
+
+    .question input[type="text"],
+    .question textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e1b5d7;
+      padding: 6px 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      resize: vertical;
+      min-height: 40px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    .question button.check-btn {
+      margin-top: 6px;
+      border: none;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #ff9ad5;
+      color: #3b235a;
+      font-weight: 600;
+    }
+
+    .question button.check-btn:hover {
+      background: #ffb2e1;
+    }
+
+    .feedback {
+      margin-top: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .feedback.ok {
+      color: #2f8f4e;
+    }
+
+    .feedback.nok {
+      color: #c0392b;
+    }
+
+    .model-answer {
+      margin-top: 4px;
+      font-size: 0.82rem;
+      background: #ffeef9;
+      padding: 4px 6px;
+      border-radius: 8px;
+      border: 1px dashed #f0b8de;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ffe5ff;
+      color: #7a3a7f;
+      margin-right: 6px;
+      margin-top: 4px;
+    }
+
+    .pill span {
+      font-size: 0.9rem;
+    }
+
+    .subtle-link {
+      font-size: 0.8rem;
+      color: #7a3a7f;
+      text-decoration: none;
+    }
+
+    .subtle-link:hover {
+      text-decoration: underline;
+    }
+
+    .section-info {
+      font-size: 0.8rem;
+      color: #85608f;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bear-flower">🐻🌸🐻🌸🐻</div>
+    <h1>Kyra – Wissenschaftspropädeutik-Prüfung (Vollversion)</h1>
+    <p>Rosa Lern-Oase mit Zusammenfassungen, Quiz &amp; Spickzettel für den ganzen Kurs 💕</p>
+    <div style="margin-top:6px; font-size:0.85rem;">
+      <a class="subtle-link" href="kyra_spickzettel.html">👉 Zur Spickzettel-Seite</a>
+    </div>
+  </header>
+
+  <main>
+    <nav>
+      <button class="active" data-topic="overview">Überblick &amp; Prüfung</button>
+      <button data-topic="wissprop">Wissenschaftspropädeutik</button>
+      <button data-topic="pico">PICO &amp; Evidenz</button>
+      <button data-topic="design2x2">2×2-Design &amp; Faktoren</button>
+      <button data-topic="timelap">Timelap &amp; Zeitfaktor</button>
+      <button data-topic="studydesign">Studiendesigns &amp; Validität</button>
+      <button data-topic="stats">Statistik &amp; Interpretation</button>
+    </nav>
+
+    <div class="grid">
+
+      <!-- OVERVIEW -->
+      <section class="card bear" id="summary-overview" data-topic="overview">
+        <span class="badge">Zusammenfassung</span>
+        <h2>Überblick &amp; Prüfungsmodus</h2>
+        <p class="tagline">Was will der Kurs – und die Klausur – von dir?</p>
+        <div class="summary">
+          <ul>
+            <li>Der Kurs bringt dir bei, wie wissenschaftliche Studien aufgebaut sind und wie du sie kritisch liest.</li>
+            <li>Im Zentrum steht <strong>Verstehen &amp; Anwenden</strong>, nicht Auswendiglernen.</li>
+            <li>Die Klausur ist <strong>Open Book</strong>:
+              du darfst Skripte und deinen Spickzettel benutzen – Zeit bleibt trotzdem knapp → guter Überblick ist Gold wert.</li>
+            <li>Typische Aufgaben:
+              <ul>
+                <li>Studiendesign erkennen (z.B. RCT, Kohortenstudie, 2×2-Design, Timelap).</li>
+                <li>PICO aus einer Frage oder einem Abstract ableiten.</li>
+                <li>passenden statistischen Test wählen.</li>
+                <li>Ergebnisse (p-Wert, Effektgröße) sinnvoll interpretieren.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card bear" id="quiz-overview" data-topic="overview">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: Überblick &amp; Klausurstrategie</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧠 Verständnis – Multiple Choice</div>
+          <h3>1. Was ist bei einer Open-Book-Klausur in diesem Kurs der wichtigste Erfolgsfaktor?</h3>
+          <div class="options">
+            <label>
+              <input type="radio" name="ov-q1" data-correct="false" />
+              A) Möglichst viel Text auf den Spickzettel quetschen.
+            </label>
+            <label>
+              <input type="radio" name="ov-q1" data-correct="true" />
+              B) Die Inhalte wirklich verstehen, damit du schnell passende Infos &amp; Beispiele findest.
+            </label>
+            <label>
+              <input type="radio" name="ov-q1" data-correct="false" />
+              C) Alle Skripte Wort für Wort abschreiben.
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Design,PICO,Test,Interpretation">
+          <div class="meta">✏️ Reflexion – Kurzantwort</div>
+          <h3>2. Nenne drei Arten von Aufgaben, die du in dieser Klausur erwartest.</h3>
+          <textarea placeholder="z.B. PICO, Studiendesign, Testwahl, Interpretation ..."></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Beispiele: PICO bestimmen, Studiendesign erkennen (z.B. 2×2-Design, Timelap, RCT),
+            geeigneten Test wählen, p-Wert &amp; Effektgröße interpretieren.
+          </div>
+        </div>
+      </section>
+
+      <!-- WISSPROP -->
+      <section class="card bear" id="summary-wissprop" data-topic="wissprop" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>Was meint Wissenschaftspropädeutik?</h2>
+        <p class="tagline">Wissenschaftliches Denken &amp; Arbeiten als Skill-Set</p>
+        <div class="summary">
+          <ul>
+            <li>Wissenschaftspropädeutik bereitet dich auf wissenschaftliches Arbeiten vor:
+              Lesen, Verstehen, Bewerten und Planen von Studien.</li>
+            <li>Typische Elemente:
+              eindeutige Fragestellung, Theoriebasis, nachvollziehbare Methode,
+              transparente Ergebnisse, reflektierte Interpretation.</li>
+            <li>Du lernst, wissenschaftliche Texte kritisch zu lesen:
+              <em>Wer</em> wurde untersucht? <em>Wie</em> gemessen? <em>Was</em> sind Grenzen?</li>
+            <li>Wichtige Meta-Skills:
+              Literatur finden, Evidenzlevel einschätzen, Studien kritisch diskutieren.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card bear" id="quiz-wissprop" data-topic="wissprop" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: Wissenschaftspropädeutik</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧠 Grundlagen – Multiple Choice</div>
+          <h3>1. Was beschreibt Wissenschaftspropädeutik am besten?</h3>
+          <div class="options">
+            <label>
+              <input type="radio" name="wissprop-q1" data-correct="false" />
+              A) Reines Auswendiglernen von Formeln für Statistikklausuren.
+            </label>
+            <label>
+              <input type="radio" name="wissprop-q1" data-correct="true" />
+              B) Einführung in wissenschaftliches Denken, kritisches Lesen und Arbeiten mit Studien.
+            </label>
+            <label>
+              <input type="radio" name="wissprop-q1" data-correct="false" />
+              C) Anwendungsfach für praktische Sportübungen ohne Theoriebasis.
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Fragestellung,Methode,Ergebnisse,Interpretation">
+          <div class="meta">✏️ Kurzantwort – Anwendung</div>
+          <h3>2. Nenne kurz vier typische Bausteine einer wissenschaftlichen Studie.</h3>
+          <p>(Stichworte genügen, z.B. „Fragestellung, …“)</p>
+          <input type="text" placeholder="Deine Antwort hier ..." />
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Mögliche Antwort: Fragestellung, theoretischer Hintergrund,
+            Methode (Design, Stichprobe, Messverfahren), Ergebnisse, Diskussion/Interpretation.
+          </div>
+        </div>
+      </section>
+
+      <!-- PICO / EVIDENZ -->
+      <section class="card" id="summary-pico" data-topic="pico" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>PICO &amp; Evidenz</h2>
+        <p class="tagline">Von der Frage zur Literatursuche</p>
+        <div class="summary">
+          <ul>
+            <li><strong>PICO</strong> strukturiert deine Forschungsfrage:
+              <em>P</em>atient/Population, <em>I</em>ntervention,
+              <em>C</em>omparison, <em>O</em>utcome.</li>
+            <li>Aus PICO leitest du Suchbegriffe für Datenbanken (z.B. PubMed) ab.</li>
+            <li>Mit Booleschen Operatoren (AND, OR, NOT) kombinierst du deine Begriffe sinnvoll.</li>
+            <li>Die Evidenzhierarchie reicht von Meta-Analysen und systematischen Reviews (hoch)
+              bis zu Fallberichten und Expertenmeinungen (niedriger).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" id="quiz-pico" data-topic="pico" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: PICO &amp; Evidenzsuche</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧠 Grundlagen – Multiple Choice</div>
+          <h3>1. Welche Komponente gehört <strong>nicht</strong> zu PICO?</h3>
+          <div class="options">
+            <label>
+              <input type="radio" name="pico-q1" data-correct="false" />
+              A) Population/Patient
+            </label>
+            <label>
+              <input type="radio" name="pico-q1" data-correct="false" />
+              B) Intervention
+            </label>
+            <label>
+              <input type="radio" name="pico-q1" data-correct="false" />
+              C) Comparison
+            </label>
+            <label>
+              <input type="radio" name="pico-q1" data-correct="true" />
+              D) Funding (Finanzierung)
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Studierende,Krafttraining,keine,Intervention,Rumpfkraft">
+          <div class="meta">🧪 Anwendung – PICO identifizieren</div>
+          <h3>2. Bestimme P, I, C, O aus folgendem Beispiel:</h3>
+          <p><em>
+            „Verbessert ein 12-wöchiges Krafttraining im Vergleich zu keiner Intervention
+            die Rumpfkraft bei Studierenden mit Rückenschmerzen?“
+          </em></p>
+          <textarea placeholder="Schreibe z.B.: P = ..., I = ..., C = ..., O = ..."></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Mögliche Lösung:<br />
+            P = Studierende mit Rückenschmerzen<br />
+            I = 12-wöchiges Krafttraining<br />
+            C = keine Intervention (Kontrollgruppe)<br />
+            O = Rumpfkraft
+          </div>
+        </div>
+
+        <div class="question" data-type="mc">
+          <div class="meta">📚 Evidenzhierarchie – Multiple Choice</div>
+          <h3>3. Welche Studie liefert in der Regel die <strong>höchste</strong> Evidenz?</h3>
+          <div class="options">
+            <label>
+              <input type="radio" name="pico-q3" data-correct="true" />
+              A) Systematisches Review mit Meta-Analyse
+            </label>
+            <label>
+              <input type="radio" name="pico-q3" data-correct="false" />
+              B) Querschnittsstudie
+            </label>
+            <label>
+              <input type="radio" name="pico-q3" data-correct="false" />
+              C) Fallbericht
+            </label>
+            <label>
+              <input type="radio" name="pico-q3" data-correct="false" />
+              D) Expertenmeinung
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+      </section>
+
+      <!-- 2x2 DESIGN -->
+      <section class="card bear" id="summary-design2x2" data-topic="design2x2" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>2×2-Design &amp; Faktoren</h2>
+        <p class="tagline">Haupteffekte &amp; Interaktionen verstehen</p>
+        <div class="summary">
+          <ul>
+            <li><strong>2×2-Design:</strong> Zwei Faktoren mit je zwei Stufen → vier Gruppen.</li>
+            <li>Beispiel:
+              Faktor A = Trainingsart (Kraft vs. Ausdauer),
+              Faktor B = Geschlecht (w vs. m) → Kraft-w, Kraft-m, Ausdauer-w, Ausdauer-m.</li>
+            <li><strong>Haupteffekt A:</strong> Mittelwerte der A-Stufen über alle B-Stufen vergleichen
+              (z.B. insgesamt Kraft vs. Ausdauer).</li>
+            <li><strong>Haupteffekt B:</strong> Mittelwerte der B-Stufen über alle A-Stufen vergleichen
+              (z.B. insgesamt w vs. m).</li>
+            <li><strong>Interaktion:</strong> Die Wirkung von A hängt von B ab
+              (z.B. Training wirkt bei Frauen stärker als bei Männern).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card bear" id="quiz-design2x2" data-topic="design2x2" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: 2×2-Design</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧠 Grundlagen – Multiple Choice</div>
+          <h3>1. Wieviele Gruppen hat ein 2×2-Design?</h3>
+          <div class="options">
+            <label>
+              <input type="radio" name="d2-q1" data-correct="false" />
+              A) 2
+            </label>
+            <label>
+              <input type="radio" name="d2-q1" data-correct="false" />
+              B) 3
+            </label>
+            <label>
+              <input type="radio" name="d2-q1" data-correct="true" />
+              C) 4
+            </label>
+            <label>
+              <input type="radio" name="d2-q1" data-correct="false" />
+              D) 8
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Haupteffekt,Interaktion">
+          <div class="meta">🧪 Anwendung – Kurzantwort</div>
+          <h3>2. Erkläre kurz den Unterschied zwischen Haupteffekt und Interaktion in einem 2×2-Design.</h3>
+          <textarea placeholder="z.B. Haupteffekt = durchschnittliche Wirkung eines Faktors, Interaktion = Faktorwirkung hängt von anderem Faktor ab"></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Haupteffekt: durchschnittliche Wirkung eines Faktors über die Stufen des anderen Faktors hinweg.
+            Interaktion: die Wirkung eines Faktors hängt von der Stufe des anderen Faktors ab
+            (z.B. Training wirkt bei Frauen stärker als bei Männern).
+          </div>
+        </div>
+      </section>
+
+      <!-- TIMELAP / ZEITFAKTOR -->
+      <section class="card" id="summary-timelap" data-topic="timelap" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>Timelap &amp; Zeitfaktor</h2>
+        <p class="tagline">Wiederholte Messungen &amp; Verläufe</p>
+        <div class="summary">
+          <ul>
+            <li><strong>Timelap / Zeitfaktor:</strong> mehrere Messzeitpunkte (z.B. T0, T1, T2 …).</li>
+            <li>Innerhalb-Personen-Design:
+              jede Person wird mehrfach gemessen (before/after, follow-up).</li>
+            <li>Vorteile:
+              höhere Power, weniger Einfluss von individuellen Unterschieden.</li>
+            <li>Nachteile:
+              Drop-out, Lerneffekte, Müdigkeit, Reihenfolgeeffekte.</li>
+            <li>Auswertung meist mit speziellen Tests für wiederholte Messungen
+              (z.B. t-Test für abhängige Stichproben oder ANOVA mit Messwiederholung).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" id="quiz-timelap" data-topic="timelap" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: Timelap &amp; Zeitfaktor</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧠 Designwahl – Multiple Choice</div>
+          <h3>1. Eine Gruppe von 30 Personen wird vor, nach 6 Wochen und nach 12 Wochen Training getestet.</h3>
+          <p>Welches Design ist das (vereinfacht)?</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="tl-q1" data-correct="false" />
+              A) Querschnittsstudie
+            </label>
+            <label>
+              <input type="radio" name="tl-q1" data-correct="true" />
+              B) Innerhalb-Personen-Design mit wiederholten Messungen
+            </label>
+            <label>
+              <input type="radio" name="tl-q1" data-correct="false" />
+              C) Fall-Kontroll-Studie
+            </label>
+            <label>
+              <input type="radio" name="tl-q1" data-correct="false" />
+              D) reine Expertenmeinung
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Vorteil,Power,Nachteil,Drop">
+          <div class="meta">🧪 Anwendung – Kurzantwort</div>
+          <h3>2. Nenne einen Vorteil und einen Nachteil von Designs mit wiederholten Messungen.</h3>
+          <textarea placeholder="z.B. Vorteil: höhere Power; Nachteil: Drop-out / Lerneffekte ..."></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Vorteil: höhere Power, weniger Einfluss von interindividuellen Unterschieden.
+            Nachteil: Drop-out, Lerneffekte, Müdigkeit, Reihenfolgeeffekte.
+          </div>
+        </div>
+      </section>
+
+      <!-- STUDYDESIGNS & VALIDITÄT -->
+      <section class="card bear" id="summary-studydesign" data-topic="studydesign" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>Studiendesigns &amp; Validität</h2>
+        <p class="tagline">Wer untersucht was – und wie gut?</p>
+        <div class="summary">
+          <ul>
+            <li><strong>Experimentell (RCT):</strong> Randomisierte Zuteilung, Kontrollgruppe, hohe interne Validität.</li>
+            <li><strong>Kohortenstudie:</strong> Gruppe über Zeit beobachtet, Risiken &amp; Inzidenzen.</li>
+            <li><strong>Fall-Kontroll-Studie:</strong> Fälle mit Outcome vs. Kontrollen ohne Outcome, rückblickend.</li>
+            <li><strong>Querschnittsstudie:</strong> Momentaufnahme; Prävalenz &amp; Zusammenhänge.</li>
+            <li><strong>Qualitativ:</strong> Interviews, Fokusgruppen; Fokus auf Bedeutungen &amp; Perspektiven.</li>
+            <li><strong>Interne Validität:</strong> Effekte wirklich durch Intervention erklärbar?</li>
+            <li><strong>Externe Validität:</strong> Übertragbarkeit auf andere Populationen &amp; Settings.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card bear" id="quiz-studydesign" data-topic="studydesign" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: Studiendesigns</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🧪 Design erkennen – Multiple Choice</div>
+          <h3>1. Eine Studie teilt 100 Personen per Zufall in „Wärmesalbe“ vs. „Placebo“ ein und misst nach 4 Wochen Schmerz.</h3>
+          <p>Welches Design liegt vor?</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="sd-q1" data-correct="true" />
+              A) Randomisierte kontrollierte Studie (RCT)
+            </label>
+            <label>
+              <input type="radio" name="sd-q1" data-correct="false" />
+              B) Querschnittsstudie
+            </label>
+            <label>
+              <input type="radio" name="sd-q1" data-correct="false" />
+              C) Fall-Kontroll-Studie
+            </label>
+            <label>
+              <input type="radio" name="sd-q1" data-correct="false" />
+              D) Qualitative Interviewstudie
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="Querschnitt,Prävalenz,Korrelation,Kausalität">
+          <div class="meta">🔍 Anwendung – Design zuordnen</div>
+          <h3>2. Einmalige Online-Umfrage bei 500 Studierenden zur Häufigkeit von Rückenschmerzen.</h3>
+          <p>Welches Studiendesign ist das und was kann man damit <em>nicht</em> sicher zeigen?</p>
+          <textarea placeholder="Design benennen &amp; z.B. Kausalität kommentieren"></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Design: Querschnittsstudie (Momentaufnahme).<br />
+            Man kann Prävalenz/Häufigkeit beschreiben und Zusammenhänge finden,
+            aber keine sicheren Kausal-Aussagen („X verursacht Y“).
+          </div>
+        </div>
+      </section>
+
+      <!-- STATISTIK -->
+      <section class="card" id="summary-stats" data-topic="stats" style="display:none;">
+        <span class="badge">Zusammenfassung</span>
+        <h2>Statistik &amp; Interpretation</h2>
+        <p class="tagline">Von p-Wert bis Effektgröße</p>
+        <div class="summary">
+          <ul>
+            <li><strong>Stichprobe vs. Population:</strong> n bezeichnet die Stichprobengröße.</li>
+            <li><strong>Lage:</strong> Mittelwert, Median, Modus; <strong>Streuung:</strong> SD, Varianz, IQR.</li>
+            <li><strong>Hypothesentest:</strong> H0 (kein Unterschied) vs. H1 (Unterschied), p-Wert, α-Fehler.</li>
+            <li><strong>Effektgröße:</strong> z.B. Cohen’s d oder r – wie groß ist der Effekt praktisch?</li>
+            <li><strong>Korrelation ≠ Kausalität:</strong> Zusammenhang heißt nicht Ursache-Wirkung.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card" id="quiz-stats" data-topic="stats" style="display:none;">
+        <span class="badge">Quiz &amp; Anwendung</span>
+        <h2>Quiz: Statistik &amp; Interpretation</h2>
+
+        <div class="question" data-type="mc">
+          <div class="meta">📊 Testwahl – Multiple Choice</div>
+          <h3>1. Du vergleichst die Sprintzeit (in Sekunden) von zwei unabhängigen Gruppen (Training vs. Kontrolle), Verteilung ist normal.</h3>
+          <p>Welcher Test ist (vereinfacht) passend?</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="st-q1" data-correct="true" />
+              A) Unabhängiger t-Test
+            </label>
+            <label>
+              <input type="radio" name="st-q1" data-correct="false" />
+              B) Abhängiger t-Test
+            </label>
+            <label>
+              <input type="radio" name="st-q1" data-correct="false" />
+              C) Mann-Whitney-U-Test bei gepaarten Daten
+            </label>
+            <label>
+              <input type="radio" name="st-q1" data-correct="false" />
+              D) Chi-Quadrat-Test für Häufigkeiten
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+
+        <div class="question" data-type="open" data-keywords="signifikant,klein,praktisch,Effektgröße">
+          <div class="meta">🧠 Interpretation – Kurzantwort</div>
+          <h3>2. Ein Ergebnis ist statistisch signifikant (p &lt; 0,05), aber die Effektgröße d ist sehr klein.</h3>
+          <p>Wie würdest du das kurz interpretieren?</p>
+          <textarea placeholder="Deine Interpretation in 1–3 Sätzen"></textarea>
+          <button class="check-btn">Lösung anzeigen &amp; grob checken</button>
+          <div class="feedback"></div>
+          <div class="model-answer" style="display:none;">
+            Mögliche Interpretation: Der Unterschied ist zwar statistisch signifikant,
+            aber inhaltlich/praktisch wahrscheinlich eher klein. Durch große Stichprobe
+            kann ein sehr kleiner Effekt schon signifikant werden.
+          </div>
+        </div>
+
+        <div class="question" data-type="mc">
+          <div class="meta">🔗 Korrelation – Multiple Choice</div>
+          <h3>3. r = 0,55 für den Zusammenhang zwischen Trainingsumfang und Muskelkraft.</h3>
+          <p>Welche Aussage passt am ehesten?</p>
+          <div class="options">
+            <label>
+              <input type="radio" name="st-q3" data-correct="false" />
+              A) Kein Zusammenhang.
+            </label>
+            <label>
+              <input type="radio" name="st-q3" data-correct="true" />
+              B) Deutlich positiver Zusammenhang, aber keine sichere Kausal-Aussage.
+            </label>
+            <label>
+              <input type="radio" name="st-q3" data-correct="false" />
+              C) Klares Kausalverhältnis: Mehr Training verursacht Muskelaufbau.
+            </label>
+            <label>
+              <input type="radio" name="st-q3" data-correct="false" />
+              D) Negativer Zusammenhang.
+            </label>
+          </div>
+          <button class="check-btn">Antwort prüfen</button>
+          <div class="feedback"></div>
+        </div>
+      </section>
+    </div>
+
+    <div style="margin-top:24px; text-align:center; font-size:0.9rem;">
+      <span class="pill"><span>🐻</span> Pausen-Tipp: Kurz aufstehen, was trinken &amp; dann weiterquizzen.</span>
+      <span class="pill"><span>🌸</span> Offene Fragen kannst du dir auf deinem Spickzettel markieren.</span>
+    </div>
+  </main>
+
+  <script>
+    // Tabs / Themenumschaltung
+    const navButtons = document.querySelectorAll("nav button");
+    const summaryCards = document.querySelectorAll("[id^='summary-']");
+    const quizCards = document.querySelectorAll("[id^='quiz-']");
+
+    function setTopic(topic) {
+      navButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.topic === topic);
+      });
+      summaryCards.forEach(card => {
+        card.style.display = card.dataset.topic === topic ? "block" : "none";
+      });
+      quizCards.forEach(card => {
+        card.style.display = card.dataset.topic === topic ? "block" : "none";
+      });
+    }
+
+    navButtons.forEach(btn => {
+      btn.addEventListener("click", () => setTopic(btn.dataset.topic));
+    });
+
+    // Quiz-Logik
+    document.querySelectorAll(".question").forEach(q => {
+      const btn = q.querySelector(".check-btn");
+      const feedback = q.querySelector(".feedback");
+      const model = q.querySelector(".model-answer");
+
+      btn.addEventListener("click", () => {
+        const type = q.dataset.type;
+        feedback.textContent = "";
+        feedback.className = "feedback";
+
+        if (type === "mc") {
+          const selected = q.querySelector("input[type='radio']:checked");
+          if (!selected) {
+            feedback.textContent = "Bitte wähle eine Antwort aus 💡";
+            feedback.classList.add("nok");
+            return;
+          }
+          const correct = selected.dataset.correct === "true";
+          if (correct) {
+            feedback.textContent = "Richtig! 🎀";
+            feedback.classList.add("ok");
+          } else {
+            feedback.textContent = "Nicht ganz – schau dir die Optionen nochmal genau an 🐻";
+            feedback.classList.add("nok");
+          }
+        } else if (type === "open") {
+          if (model) {
+            model.style.display = "block";
+          }
+          const input = q.querySelector("textarea, input[type='text']");
+          if (!input) return;
+          const userText = (input.value || "").toLowerCase();
+          const kwString = q.dataset.keywords || "";
+          const keywords = kwString.split(",").map(k => k.trim().toLowerCase()).filter(Boolean);
+
+          if (keywords.length === 0 || userText.length === 0) {
+            feedback.textContent = "Hier gibt es eine Beispiel-Lösung – vergleiche deine Antwort 🌸";
+            feedback.classList.add("ok");
+            return;
+          }
+
+          const matched = keywords.filter(k => userText.includes(k));
+          if (matched.length >= Math.max(1, Math.round(keywords.length * 0.5))) {
+            feedback.textContent = "Sieht gut aus – viele wichtige Stichworte sind drin ✔️";
+            feedback.classList.add("ok");
+          } else {
+            feedback.textContent = "Einige zentrale Stichworte fehlen noch – schau in die Musterlösung 📝";
+            feedback.classList.add("nok");
+          }
+        }
+      });
+    });
+
+    // Startthema
+    setTopic("overview");
+  </script>
+</body>
+</html>
